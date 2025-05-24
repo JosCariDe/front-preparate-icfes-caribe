@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:caribe_app/config/theme/app_theme.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -6,23 +7,23 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF8FBC8F), // Placeholder green color
+      backgroundColor: primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/logo.png', // Placeholder logo path
+              'assets/img/icfesLogo.png',
               width: 200,
               height: 200,
             ),
             const SizedBox(height: 20),
             const Text(
-              'Prepare ICFES Caribe',
+              'PREPARATE ICFES CARIBE',
               style: TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                color: primaryText,
               ),
               textAlign: TextAlign.center,
             ),
@@ -30,7 +31,8 @@ class SplashScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[200],
+                minimumSize: const Size(250, 50),
+                backgroundColor: secondaryBackground,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
@@ -39,14 +41,15 @@ class SplashScreen extends StatelessWidget {
               ),
               child: const Text(
                 'Iniciar Sesion',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: primaryText),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[200],
+                minimumSize: const Size(200, 50),
+                backgroundColor: primaryBackground,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
@@ -55,7 +58,7 @@ class SplashScreen extends StatelessWidget {
               ),
               child: const Text(
                 'Entrar como invitado',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: primaryText),
               ),
             ),
           ],

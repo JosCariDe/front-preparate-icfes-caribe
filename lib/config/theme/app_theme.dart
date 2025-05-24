@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 
-const Color _customColor = Color(0x00000005);
+const Color primaryColor = Color(0xFF7bb369);
+const Color secondaryColor = Color(0xFFb3697b);
+const Color tertiaryColor = Color(0xFF3a3a3a);
+const Color alternateColor = Color(0xFF69b383);
+const Color primaryText = Color(0xFF101213);
+const Color secondaryText = Color(0xFF000000);
+const Color primaryBackground = Color(0xFFf1f4f8);
+const Color secondaryBackground = Color(0xFFffffff);
+
 const List<Color> _colorThemes = [
-  _customColor,
-  Colors.blue,
-  Colors.teal,
-  Colors.green,
-  Colors.red,
-  Colors.yellow,
-  Colors.orange,
-  Colors.pink
+  primaryColor,
+  secondaryColor,
+  tertiaryColor,
+  alternateColor,
+  primaryText,
+  secondaryText,
+  primaryBackground,
+  secondaryBackground,
 ];
 
 class AppTheme {
