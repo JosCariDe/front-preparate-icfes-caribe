@@ -1,3 +1,4 @@
+import 'package:caribe_app/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:caribe_app/config/theme/app_theme.dart';
 
@@ -12,11 +13,7 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/img/icfesLogo.png',
-              width: 200,
-              height: 200,
-            ),
+            Image.asset('assets/img/icfesLogo.png', width: 200, height: 200),
             const SizedBox(height: 20),
             const Text(
               'PREPARATE ICFES CARIBE',
@@ -29,11 +26,19 @@ class SplashScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(250, 50),
                 backgroundColor: secondaryBackground,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 15,
+                ),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -50,7 +55,10 @@ class SplashScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(200, 50),
                 backgroundColor: primaryBackground,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 15,
+                ),
                 textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
