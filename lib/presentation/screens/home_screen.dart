@@ -90,7 +90,7 @@ class ClasesICFES extends StatelessWidget {
                         offset: const Offset(-10, 0),
                         child: CircleAvatar(
                           radius: 15,
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.blueGrey,
                           child: Icon(Icons.person, size: 20, color: Colors.grey),
                         ),
                       ),
@@ -99,6 +99,14 @@ class ClasesICFES extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 15,
                           backgroundColor: Colors.white,
+                          child: Icon(Icons.person, size: 20, color: Colors.grey),
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(-30, 0),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.blueGrey,
                           child: Icon(Icons.person, size: 20, color: Colors.grey),
                         ),
                       ),
