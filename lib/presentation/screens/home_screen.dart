@@ -169,6 +169,14 @@ class ClasesICFES extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color(0xFFB06D80), // Color de fondo de la tarjeta
               borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(111, 158, 158, 158),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3)
+                )
+              ]
             ),
             child: Padding(
               padding: EdgeInsets.all(15.0),
