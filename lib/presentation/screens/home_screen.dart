@@ -26,10 +26,125 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10,),
-            ClasesICFES()
+            ClasesICFES(),
             //TODO SECCION AVANCE
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Mi Avance',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10,),
+            SeccionAvance(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SeccionAvance extends StatelessWidget {
+  const SeccionAvance({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2, //? Numero de Pestaañas
+      child: Column(
+        children: [
+          TabBar(
+            indicatorColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.primary,
+            unselectedLabelColor: Colors.grey,
+            tabs: const [
+              Tab(text: 'Foros',),
+              Tab(text: 'Simulacros',),
+            ],
+          ),
+          SizedBox(
+            height: 180,
+            child: TabBarView(
+              children: [
+                //? PESTAÑA FOROS:
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: secondaryBackground,
+                      border: Border.all(
+                        width: 2.8,
+                        color: primaryColor
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Aportaciones como jovenes a la sociedad',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700  
+                            ),
+                          ),
+                          Text(
+                            'Creado por: Lic. Maria Marcela',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300  
+                            ),
+                          ),
+                          Divider(
+                            height: 10,
+                            color: primaryColor,
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                'Creado el 12/05/25',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w200,
+                                  color: primaryColor,
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: secondaryColor,
+                                ),
+                                onPressed: () {}, 
+                                child: Text('Entrar',
+                                  style: TextStyle(
+                                    color:Colors.white,
+                                  )
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10)),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -57,6 +172,7 @@ class ClasesICFES extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.all(15.0),
+              
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
