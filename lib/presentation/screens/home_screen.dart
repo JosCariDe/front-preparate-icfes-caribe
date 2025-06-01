@@ -26,78 +26,89 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10,),
-            SizedBox(
-              height: 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 3, // ? 3 Tarjeatas de ejemplo
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 250,
-                    margin: EdgeInsets.only(left: index == 0 ? 20 : 10, right: 10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFB06D80), // Color de fondo de la tarjeta
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.monitor,
-                            size: 40,
-                            color: primaryColor,
-                          ),
-                          const SizedBox(height: 10,),
-                          Text(
-                            'Normal 11-B',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimary,),
-                            
-                          ),
-                          Text(
-                            '2 SImulacros Pendiente',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimary,),
-                            
-                          ),
-                          const Spacer(),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: Colors.white,
-                                child: Icon(Icons.person, size: 20, color: Colors.grey,),
-                              ),
-                              Transform.translate(
-                                offset: const Offset(-10, 0),
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.person, size: 20, color: Colors.grey),
-                                ),
-                              ),
-                              Transform.translate(
-                                offset: const Offset(-20, 0),
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.person, size: 20, color: Colors.grey),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
+            ClasesICFES()
             //TODO SECCION AVANCE
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ClasesICFES extends StatelessWidget {
+  const ClasesICFES({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 3, // ? 3 Tarjeatas de ejemplo
+        itemBuilder: (context, index) {
+          return Container(
+            width: 250,
+            margin: EdgeInsets.only(left: index == 0 ? 20 : 10, right: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFB06D80), // Color de fondo de la tarjeta
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.monitor,
+                    size: 40,
+                    color: primaryColor,
+                  ),
+                  const SizedBox(height: 10,),
+                  Text(
+                    'Normal 11-B',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,),
+                    
+                  ),
+                  Text(
+                    '2 SImulacros Pendiente',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,),
+                    
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 15,
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.person, size: 20, color: Colors.grey,),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(-10, 0),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.person, size: 20, color: Colors.grey),
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(-20, 0),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.person, size: 20, color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
