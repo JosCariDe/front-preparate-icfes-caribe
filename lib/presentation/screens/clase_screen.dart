@@ -19,68 +19,79 @@ class ClaseScreen extends StatelessWidget {
             //! Aquí irá el selector de pestañas (Pending/Completed)
             _SelectorPestanias(),
             //! Aquí irá la lista de simulacros/pruebas
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                final isPending = index == 0;
-
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Prueba de Matematicas'),
-                                  Text('19 de 20 preguntas respondidas'),
-                                ],
-                              ),
-                              Icon(
-                                Icons.radio_button_unchecked,
-                                color: Colors.grey,
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 7.5,),
-                          Divider(),
-                          SizedBox(height: 7.5,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text('Disponible hasta: --/--'),
-                              ElevatedButton(onPressed: () {}, child: Text('Entrar'),),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            _ListSimulacros(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ListSimulacros extends StatelessWidget {
+  const _ListSimulacros({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 2,
+      itemBuilder: (context, index) {
+        final isPending = index == 0;
+    
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Prueba de Matematicas'),
+                          Text('19 de 20 preguntas respondidas'),
+                        ],
+                      ),
+                      Icon(
+                        Icons.radio_button_unchecked,
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 7.5,),
+                  Divider(),
+                  SizedBox(height: 7.5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('Disponible hasta: --/--'),
+                      ElevatedButton(onPressed: () {}, child: Text('Entrar'),),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
