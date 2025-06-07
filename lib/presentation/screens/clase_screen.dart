@@ -1,9 +1,13 @@
 import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class ClaseScreen extends StatelessWidget {
-  const ClaseScreen({super.key});
+class ClaseScreen extends StatefulWidget {
 
+  @override
+  State<ClaseScreen> createState() => _ClaseScreenState();
+}
+
+class _ClaseScreenState extends State<ClaseScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -28,9 +32,7 @@ class ClaseScreen extends StatelessWidget {
 }
 
 class _ListSimulacros extends StatelessWidget {
-  const _ListSimulacros({
-    super.key,
-  });
+  const _ListSimulacros({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class _ListSimulacros extends StatelessWidget {
       itemCount: 2,
       itemBuilder: (context, index) {
         final isPending = index == 0;
-    
+
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Container(
@@ -70,22 +72,19 @@ class _ListSimulacros extends StatelessWidget {
                           Text('19 de 20 preguntas respondidas'),
                         ],
                       ),
-                      Icon(
-                        Icons.radio_button_unchecked,
-                        color: Colors.grey,
-                      )
+                      Icon(Icons.radio_button_unchecked, color: Colors.grey),
                     ],
                   ),
-                  SizedBox(height: 7.5,),
+                  SizedBox(height: 7.5),
                   Divider(),
-                  SizedBox(height: 7.5,),
+                  SizedBox(height: 7.5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text('Disponible hasta: --/--'),
-                      ElevatedButton(onPressed: () {}, child: Text('Entrar'),),
+                      ElevatedButton(onPressed: () {}, child: Text('Entrar')),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -96,9 +95,13 @@ class _ListSimulacros extends StatelessWidget {
   }
 }
 
-class _SelectorPestanias extends StatelessWidget {
-  const _SelectorPestanias({super.key});
+class _SelectorPestanias extends StatefulWidget {
+  @override
+  State<_SelectorPestanias> createState() => _SelectorPestaniasState();
+}
 
+class _SelectorPestaniasState extends State<_SelectorPestanias> {
+  Set<String> selected = <String>{'Pendiente'};
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -116,6 +119,9 @@ class _SelectorPestanias extends StatelessWidget {
           onSelectionChanged: (Set<String> newSelection) {
             // Lógica para cambiar entre "Pending" y "Completed"
             // Esto se manejará con un StatefulWidget más adelante
+            setState(() {
+              selected = <String>{'Completado'};
+            });
           },
           style: SegmentedButton.styleFrom(
             backgroundColor: Colors.white,

@@ -1,9 +1,32 @@
-import 'package:caribe_app/presentation/screens/home_screen.dart';
+import 'package:caribe_app/presentation/screens/login_screen.dart'; // Importa la nueva LoginScreen
 import 'package:flutter/material.dart';
 import 'package:caribe_app/config/theme/app_theme.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToLogin();
+  }
+
+  Future<void> _navigateToLogin() async {
+    // Simula un tiempo de carga mínimo para la splash screen
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()), // Navega a LoginScreen
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,51 +46,6 @@ class SplashScreen extends StatelessWidget {
                 color: primaryText,
               ),
               textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 50),
-                backgroundColor: secondaryBackground,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
-                ),
-                textStyle: const TextStyle(fontSize: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Iniciar Sesion',
-                style: TextStyle(color: primaryText),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 50),
-                backgroundColor: primaryBackground,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
-                ),
-                textStyle: const TextStyle(fontSize: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Entrar como invitado',
-                style: TextStyle(color: primaryText),
-              ),
             ),
           ],
         ),
