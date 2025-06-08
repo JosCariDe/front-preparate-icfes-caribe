@@ -4,15 +4,16 @@ part 'foro.g.dart';
 
 @JsonSerializable()
 class Foro {
+  @JsonKey(name: '_id')
   final String id;
-  final String titulo;
-  final String descripcion;
+  final String nombre;
+  final String? descripcion;
   final String creador;
   final DateTime fecha;
 
   Foro({
     required this.id,
-    required this.titulo,
+    required this.nombre,
     required this.descripcion,
     required this.creador,
     required this.fecha,

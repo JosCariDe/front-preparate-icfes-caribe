@@ -6,11 +6,13 @@ part 'clase_icfes.g.dart';
 
 @JsonSerializable()
 class ClaseICFES {
+  @JsonKey(name: '_id')
   final String id;
+  @JsonKey(name: 'nombre_clase')
   final String nombreClase;
   final String profesor;
-  final List<Foro> foros;
-  final List<Simulacro> simulacros;
+  final List<Foro>? foros;
+  final List<Simulacro>? simulacros;
 
   ClaseICFES({
     required this.id,

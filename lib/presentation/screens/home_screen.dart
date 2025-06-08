@@ -113,12 +113,12 @@ class SeccionAvance extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount:
                       estudiante.clasesICFES!.isNotEmpty
-                          ? estudiante.clasesICFES!.first.foros.length
+                          ? estudiante.clasesICFES!.first.foros?.length
                           : 0,
                   itemBuilder: (context, i) {
                     if (estudiante.clasesICFES!.isEmpty)
                       return const SizedBox.shrink();
-                    final foro = estudiante.clasesICFES?.first.foros[i];
+                    final foro = estudiante.clasesICFES!.first.foros?[i];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -136,7 +136,7 @@ class SeccionAvance extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                foro!.titulo, // ¡Dinámico!
+                                foro!.nombre, // ¡Dinámico!
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                               const SizedBox(height: 5),
@@ -192,13 +192,13 @@ class SeccionAvance extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount:
                       estudiante.clasesICFES!.isNotEmpty
-                          ? estudiante.clasesICFES!.first.simulacros.length
+                          ? estudiante.clasesICFES!.first.simulacros?.length
                           : 0,
                   itemBuilder: (context, i) {
                     if (estudiante.clasesICFES!.isEmpty) return const SizedBox.shrink();
                     final simulacro =
-                        estudiante.clasesICFES!.first.simulacros[i];
-                    final isPending = simulacro.estado != 'completado';
+                        estudiante.clasesICFES!.first.simulacros?[i];
+                    final isPending = simulacro?.estado != 'completado';
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -227,7 +227,7 @@ class SeccionAvance extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    simulacro.titulo, // ¡Dinámico!
+                                    simulacro!.titulo, // ¡Dinámico!
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
@@ -239,7 +239,7 @@ class SeccionAvance extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                '${simulacro.cantidadPreguntas} Preguntas', // ¡Dinámico!
+                                '${simulacro.listaIdPreguntas?.length} Preguntas', // ¡Dinámico!
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                               const SizedBox(height: 10),
@@ -344,7 +344,7 @@ class ClasesICFES extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${clase.simulacros.where((s) => s.estado != 'completado').length} Simulacros Pendiente',
+                    '${clase.simulacros?.where((s) => s.estado != 'completado').length} Simulacros Pendiente',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),

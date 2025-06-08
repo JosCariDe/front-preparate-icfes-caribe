@@ -7,17 +7,30 @@ part of 'simulacro.dart';
 // **************************************************************************
 
 Simulacro _$SimulacroFromJson(Map<String, dynamic> json) => Simulacro(
-  id: json['id'] as String,
+  id: json['_id'] as String,
   titulo: json['titulo'] as String,
   area: json['area'] as String,
-  cantidadPreguntas: (json['cantidadPreguntas'] as num).toInt(),
   estado: json['estado'] as String,
+  listaIdPreguntas:
+      (json['lista_id_preguntas'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+  listaOpcionesCorrectas:
+      (json['lista_opciones_correctas'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+  listaOpcionesEscogidas:
+      (json['lista_opciones_escogidas'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
 );
 
 Map<String, dynamic> _$SimulacroToJson(Simulacro instance) => <String, dynamic>{
-  'id': instance.id,
+  '_id': instance.id,
   'titulo': instance.titulo,
   'area': instance.area,
-  'cantidadPreguntas': instance.cantidadPreguntas,
   'estado': instance.estado,
+  'lista_id_preguntas': instance.listaIdPreguntas,
+  'lista_opciones_correctas': instance.listaOpcionesCorrectas,
+  'lista_opciones_escogidas': instance.listaOpcionesEscogidas,
 };
