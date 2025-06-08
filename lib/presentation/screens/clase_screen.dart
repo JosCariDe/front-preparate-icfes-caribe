@@ -232,6 +232,7 @@ class _AppBarClasesICFES extends StatelessWidget implements PreferredSizeWidget 
     final colors = Theme.of(context).colorScheme;
 
     return AppBar(
+      automaticallyImplyLeading: false, // Added to prevent the extra back arrow
       backgroundColor: primaryColor,
       toolbarHeight: 180,
       flexibleSpace: SafeArea(

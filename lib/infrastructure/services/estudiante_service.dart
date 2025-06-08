@@ -26,20 +26,57 @@ class EstudianteService {
       body: json.encode({'correo': correo, 'contrasena': contrasena}),
     );
 
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      // Asumiendo que la API de login devuelve directamente el objeto estudiante
-      // o un objeto con una clave 'data' que contiene el estudiante.
-      // Ajusta esto según la estructura real de tu respuesta de login.
+
       if (jsonResponse.containsKey('data')) {
         return Estudiante.fromJson(jsonResponse['data']);
       } else {
-        return Estudiante.fromJson(jsonResponse); // Si el estudiante está directamente en la raíz
+        return Estudiante.fromJson(
+          jsonResponse,
+        ); // Si el estudiante está directamente en la raíz
       }
     } else {
       // Manejo de errores de autenticación (ej. credenciales inválidas)
       final Map<String, dynamic> errorResponse = json.decode(response.body);
-      throw Exception(errorResponse['message'] ?? 'Error de autenticación: ${response.statusCode}');
+      throw Exception(
+        errorResponse['message'] ??
+            'Error de autenticación: ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<Estudiante> registerEstudiante(
+    String nombreCompleto,
+    String correo,
+    String contrasena,
+    String departamento,
+    String municipio,
+    String grado,
+  ) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/auth/register'),
+      headers: {'Content-type': 'application/json'},
+      body: json.encode({'nombre_completo': nombreCompleto, 'correo': correo, 'contrasena': contrasena, 'departamento':departamento, 'municipio': municipio, 'grado': grado}),
+    );
+
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      
+      if (jsonResponse.containsKey('data')) {
+        return Estudiante.fromJson(jsonResponse['data']);
+      } else {
+        return Estudiante.fromJson(
+          jsonResponse,
+        ); // Si el estudiante está directamente en la raíz
+      }
+    } else {
+      // Manejo de errores de autenticación (ej. credenciales inválidas)
+      final Map<String, dynamic> errorResponse = json.decode(response.body);
+      throw Exception(
+        errorResponse['message'] ??
+            'Error Al crear un estudiante: ${response.statusCode}',
+      );
     }
   }
 }

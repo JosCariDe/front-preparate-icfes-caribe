@@ -4,6 +4,7 @@ import 'package:caribe_app/presentation/providers/estudiante_provider.dart';
 import 'package:caribe_app/presentation/screens/clase_screen.dart';
 import 'package:caribe_app/presentation/screens/home_screen.dart';
 import 'package:caribe_app/presentation/screens/login_screen.dart';
+import 'package:caribe_app/presentation/screens/register_screen.dart';
 import 'package:caribe_app/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa el paquete provider
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Caribe App',
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(), // Asegúrate de que HomeScreen sea tu pantalla inicial
+        home: RegisterScreen(), // Asegúrate de que HomeScreen sea tu pantalla inicial
       ),
     );
   }

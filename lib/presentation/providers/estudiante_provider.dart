@@ -57,6 +57,31 @@ class EstudianteProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> register(String nombreCompleto,
+    String correo,
+    String contrasena,
+    String departamento,
+    String municipio,
+    String grado,
+    ) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _estudiante = await estudianteService.registerEstudiante(nombreCompleto, correo , contrasena, departamento, municipio, grado);
+      _isLoading = false;
+      notifyListeners();
+      return true; // Inicio de sesión exitoso
+    } catch (e) {
+      _errorMessage = e.toString().replaceFirst('Exception: ', ''); 
+      _estudiante = null;
+      _isLoading = false;
+      notifyListeners();
+      return false; // Inicio de sesión fallido
+    }
+  }
+
   // Método para cerrar sesión 
   void logout() {
     _estudiante = null;

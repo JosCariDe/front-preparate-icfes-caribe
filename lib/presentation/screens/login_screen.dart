@@ -1,3 +1,4 @@
+import 'package:caribe_app/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -216,10 +217,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 30),
                       TextButton(
                         onPressed: () {
-                          // Lógica para navegar a la pantalla de registro
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen())); 
                         },
                         child: Text(
-                          'Sign Up here',
+                          'Registrate aquí rey',
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                 color: colors.primary,
                                 fontWeight: FontWeight.bold,
