@@ -1,5 +1,6 @@
 import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:caribe_app/domain/entities/estudiante.dart';
+import 'package:caribe_app/presentation/screens/clase_screen.dart';
 import 'package:caribe_app/presentation/widgets/_CardForo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa el paquete provider
@@ -79,7 +80,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            SeccionAvance(estudiante: estudiante,),
+            SeccionAvance(estudiante: estudiante),
           ],
         ),
       ),
@@ -195,7 +196,8 @@ class SeccionAvance extends StatelessWidget {
                           ? estudiante.clasesICFES!.first.simulacros?.length
                           : 0,
                   itemBuilder: (context, i) {
-                    if (estudiante.clasesICFES!.isEmpty) return const SizedBox.shrink();
+                    if (estudiante.clasesICFES!.isEmpty)
+                      return const SizedBox.shrink();
                     final simulacro =
                         estudiante.clasesICFES!.first.simulacros?[i];
                     final isPending = simulacro?.estado != 'completado';
@@ -314,64 +316,49 @@ class ClasesICFES extends StatelessWidget {
             estudiante.clasesICFES?.length ?? 0, // ? 3 Tarjeatas de ejemplo
         itemBuilder: (context, index) {
           final clase = estudiante.clasesICFES?[index];
-          return Container(
-            width: 250,
-            margin: EdgeInsets.only(left: index == 0 ? 20 : 10, right: 10),
-            decoration: BoxDecoration(
-              color: const Color(0xFFB06D80), // Color de fondo de la tarjeta
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(111, 158, 158, 158),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ClaseScreen(clase: clase)));
+            },
+            child: Container(
+              width: 250,
+              margin: EdgeInsets.only(left: index == 0 ? 20 : 10, right: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFB06D80), // Color de fondo de la tarjeta
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(111, 158, 158, 158),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.monitor, size: 40, color: primaryColor),
-                  const SizedBox(height: 10),
-                  Text(
-                    clase!.nombreClase,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                  Text(
-                    '${clase.simulacros?.where((s) => s.estado != 'completado').length} Simulacros Pendiente',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.person, size: 20, color: Colors.grey),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.monitor, size: 40, color: primaryColor),
+                    const SizedBox(height: 10),
+                    Text(
+                      clase!.nombreClase,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      Transform.translate(
-                        offset: const Offset(-10, 0),
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: Colors.blueGrey,
-                          child: Icon(
-                            Icons.person,
-                            size: 20,
-                            color: Colors.grey,
-                          ),
-                        ),
+                    ),
+                    Text(
+                      '${clase.simulacros?.where((s) => s.estado != 'completado').length} Simulacros Pendiente',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      Transform.translate(
-                        offset: const Offset(-20, 0),
-                        child: CircleAvatar(
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        CircleAvatar(
                           radius: 15,
                           backgroundColor: Colors.white,
                           child: Icon(
@@ -380,22 +367,46 @@ class ClasesICFES extends StatelessWidget {
                             color: Colors.grey,
                           ),
                         ),
-                      ),
-                      Transform.translate(
-                        offset: const Offset(-30, 0),
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: Colors.blueGrey,
-                          child: Icon(
-                            Icons.person,
-                            size: 20,
-                            color: Colors.grey,
+                        Transform.translate(
+                          offset: const Offset(-10, 0),
+                          child: CircleAvatar(
+                            radius: 15,
+                            backgroundColor: Colors.blueGrey,
+                            child: Icon(
+                              Icons.person,
+                              size: 20,
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        Transform.translate(
+                          offset: const Offset(-20, 0),
+                          child: CircleAvatar(
+                            radius: 15,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.person,
+                              size: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        Transform.translate(
+                          offset: const Offset(-30, 0),
+                          child: CircleAvatar(
+                            radius: 15,
+                            backgroundColor: Colors.blueGrey,
+                            child: Icon(
+                              Icons.person,
+                              size: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
