@@ -1,26 +1,72 @@
-import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:caribe_app/config/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:caribe_app/presentation/providers/estudiante_provider.dart';
+import 'package:caribe_app/presentation/screens/home_screen.dart';
 
-
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    final estudianteProvider = Provider.of<EstudianteProvider>(context, listen: false);
+    final success = await estudianteProvider.login(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    if (success) {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(estudianteProvider.errorMessage ?? 'Error desconocido al iniciar sesión'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final estudianteProvider = context.watch<EstudianteProvider>(); // Escucha cambios en el provider
+
     return Scaffold(
       backgroundColor: primaryColor,
       body: Stack(
         children: [
-          // Título "Preparate ICFES Caribe" en la parte superior
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.15, // Ajusta la posición vertical
+            top: MediaQuery.of(context).size.height * 0.15,
             left: 0,
             right: 0,
             child: Text(
               'Preparate ICFES\nCaribe',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: primaryBackground,
+                    color: colors.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -29,13 +75,12 @@ class LoginScreen extends StatelessWidget {
             top: MediaQuery.of(context).size.height * 0.35,
             left: 20,
             right: 20,
+            bottom: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: primaryBackground,
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                color: colors.surface,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
               ),
-              width: MediaQuery.of(context).size.width * 30,
-              height: MediaQuery.of(context).size.height * 0.80,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                 child: SingleChildScrollView(
@@ -51,6 +96,8 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       // Campo de Email
                       TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           filled: true,
@@ -65,7 +112,8 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       // Campo de Contraseña
                       TextField(
-                        obscureText: true, // Para ocultar la contraseña
+                        controller: _passwordController,
+                        obscureText: !_isPasswordVisible, // Controla la visibilidad
                         decoration: InputDecoration(
                           hintText: 'Contraseña',
                           filled: true,
@@ -74,31 +122,50 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          suffixIcon: const Icon(Icons.visibility_off, color: Colors.grey), // Icono de ojo
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         ),
                       ),
                       const SizedBox(height: 30),
                       // Botón Iniciar Sesión
-                      ElevatedButton(
-                        onPressed: () {
-                          // Lógica de inicio de sesión aquí
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50), // Ancho completo
-                          backgroundColor: primaryColor, // Color verde del botón
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      estudianteProvider.isLoading
+                          ? const CircularProgressIndicator() // Muestra un indicador de carga
+                          : ElevatedButton(
+                              onPressed: _login, // Llama a la función _login
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 50),
+                                backgroundColor: colors.secondary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                'Iniciar Sesión',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      color: colors.onSecondary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                      if (estudianteProvider.errorMessage != null) // Muestra mensaje de error
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            estudianteProvider.errorMessage!,
+                            style: const TextStyle(color: Colors.red, fontSize: 14, fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        child: Text(
-                          'Iniciar Sesión',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: primaryBackground,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ),
                       const SizedBox(height: 20),
                       Text(
                         'O inicia sesión con:',
@@ -107,12 +174,11 @@ class LoginScreen extends StatelessWidget {
                             ),
                       ),
                       const SizedBox(height: 20),
-                      // Botón Continue with Google
                       OutlinedButton.icon(
                         onPressed: () {
                           // Lógica para iniciar sesión con Google
                         },
-                        icon: Image.asset('assets/img/9187604.png', height: 24), // Asegúrate de tener esta imagen
+                        icon: Image.asset('assets/img/9187604.png', height: 24),
                         label: Text(
                           'Continue with Google',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -128,12 +194,11 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      // Botón Continue with Apple
                       OutlinedButton.icon(
                         onPressed: () {
                           // Lógica para iniciar sesión con Apple
                         },
-                        icon: const Icon(Icons.apple, color: Colors.black, size: 28), // Icono de Apple
+                        icon: const Icon(Icons.apple, color: Colors.black, size: 28),
                         label: Text(
                           'Continue with Apple',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -149,7 +214,6 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      // Texto "Sign Up here"
                       TextButton(
                         onPressed: () {
                           // Lógica para navegar a la pantalla de registro
@@ -157,7 +221,7 @@ class LoginScreen extends StatelessWidget {
                         child: Text(
                           'Sign Up here',
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: primaryColor,
+                                color: colors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
@@ -166,10 +230,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            )
-          )
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }

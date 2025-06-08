@@ -14,6 +14,7 @@ class EstudianteProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Método para cargar todos los estudiantes (mantenerlo para HomeScreen si es necesario)
   Future<void> loadEstudiantes() async {
     _isLoading = true;
     _errorMessage = null;
@@ -22,7 +23,7 @@ class EstudianteProvider extends ChangeNotifier {
     try {
       final estudiantes = await estudianteService.getEstudiantes();
       if (estudiantes.isNotEmpty) {
-        _estudiante = estudiantes.first; //TODO Tomamos el primer estudiante de la lista
+        _estudiante = estudiantes.first; // Tomamos el primer estudiante de la lista
       } else {
         _estudiante = null;
         _errorMessage = 'No se encontraron estudiantes.';
@@ -34,5 +35,32 @@ class EstudianteProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  // Nuevo método para iniciar sesión
+  Future<bool> login(String correo, String contrasena) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _estudiante = await estudianteService.loginEstudiante(correo, contrasena);
+      _isLoading = false;
+      notifyListeners();
+      return true; // Inicio de sesión exitoso
+    } catch (e) {
+      _errorMessage = e.toString().replaceFirst('Exception: ', ''); 
+      _estudiante = null;
+      _isLoading = false;
+      notifyListeners();
+      return false; // Inicio de sesión fallido
+    }
+  }
+
+  // Método para cerrar sesión 
+  void logout() {
+    _estudiante = null;
+    _errorMessage = null;
+    notifyListeners();
   }
 }
