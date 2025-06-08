@@ -7,27 +7,27 @@ part of 'estudiante.dart';
 // **************************************************************************
 
 Estudiante _$EstudianteFromJson(Map<String, dynamic> json) => Estudiante(
-  id: json['id'] as String,
-  nombreCompleto: json['nombreCompleto'] as String,
+  id: json['_id'] as String,
+  nombreCompleto: json['nombre_completo'] as String,
   correo: json['correo'] as String,
-  contrasenaHash: json['contrasenaHash'] as String,
-  fechaRegistro: DateTime.parse(json['fechaRegistro'] as String),
-  departamento: json['departamento'] as String,
-  municipio: json['municipio'] as String,
-  grado: json['grado'] as String,
+  contrasenaHash: json['contrasena_hash'] as String?,
+  fechaRegistro: DateTime.parse(json['fecha_registro'] as String),
+  departamento: json['departamento'] as String?,
+  municipio: json['municipio'] as String?,
+  grado: json['grado'] as String?,
   clasesICFES:
-      (json['clasesICFES'] as List<dynamic>)
-          .map((e) => ClaseICFES.fromJson(e as Map<String, dynamic>))
+      (json['clasesICFES'] as List<dynamic>?)
+          ?.map((e) => ClaseICFES.fromJson(e as Map<String, dynamic>))
           .toList(),
 );
 
 Map<String, dynamic> _$EstudianteToJson(Estudiante instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'nombreCompleto': instance.nombreCompleto,
+      '_id': instance.id,
+      'nombre_completo': instance.nombreCompleto,
       'correo': instance.correo,
-      'contrasenaHash': instance.contrasenaHash,
-      'fechaRegistro': instance.fechaRegistro.toIso8601String(),
+      'contrasena_hash': instance.contrasenaHash,
+      'fecha_registro': instance.fechaRegistro.toIso8601String(),
       'departamento': instance.departamento,
       'municipio': instance.municipio,
       'grado': instance.grado,

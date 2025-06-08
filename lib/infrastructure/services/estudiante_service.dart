@@ -12,7 +12,7 @@ class EstudianteService {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       final List<dynamic> data =
           jsonResponse['data']; //? Accede a la clave 'data'
-
+      print('Datos obtenidos de la petición de estudiantes: $data');
       return data.map((json) => Estudiante.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load estudiantes: ${response.statusCode}');

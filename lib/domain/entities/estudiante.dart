@@ -5,25 +5,29 @@ part 'estudiante.g.dart'; // Archivo generado automáticamente
 
 @JsonSerializable()
 class Estudiante {
+  @JsonKey(name: '_id')
   final String id;
+  @JsonKey(name: 'nombre_completo')
   final String nombreCompleto;
   final String correo;
-  final String contrasenaHash;
+  @JsonKey(name: 'contrasena_hash')
+  final String? contrasenaHash;
+  @JsonKey(name: 'fecha_registro') // Hacemos nullable
   final DateTime fechaRegistro;
-  final String departamento;
-  final String municipio;
-  final String grado;
-  final List<ClaseICFES> clasesICFES;
+  final String? departamento; // Hacemos nullable
+  final String? municipio; // Hacemos nullable
+  final String? grado; // Hacemos nullable
+  final List<ClaseICFES>? clasesICFES;
 
   Estudiante({
     required this.id,
     required this.nombreCompleto,
     required this.correo,
-    required this.contrasenaHash,
+    this.contrasenaHash, // Ya no es required
     required this.fechaRegistro,
-    required this.departamento,
-    required this.municipio,
-    required this.grado,
+    this.departamento, // Ya no es required
+    this.municipio, // Ya no es required
+    this.grado, // Ya no es required
     required this.clasesICFES,
   });
 
