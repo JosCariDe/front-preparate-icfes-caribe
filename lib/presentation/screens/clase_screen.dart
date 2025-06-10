@@ -1,4 +1,5 @@
 import 'package:caribe_app/config/theme/app_theme.dart';
+import 'package:caribe_app/presentation/screens/simulacro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:caribe_app/domain/entities/clase_icfes.dart'; // Importa el modelo ClaseICFES
 import 'package:caribe_app/domain/entities/simulacro.dart'; // Importa el modelo Simulacro
@@ -21,29 +22,39 @@ class _ClaseScreenState extends State<ClaseScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      backgroundColor: colors.surfaceContainerHighest,
-      appBar: _AppBarClasesICFES(clase: widget.clase), // Pasa la clase al AppBar
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _SelectorPestanias(
-              selectedTab: _selectedTab,
-              onSelectionChanged: (newSelection) {
-                setState(() {
-                  _selectedTab = newSelection;
-                });
-              },
-            ),
-            // Condicionalmente muestra la lista de simulacros o foros
-            if (_selectedTab.contains('Pendiente') || _selectedTab.contains('Completado'))
-              _ListSimulacros(
-                simulacros: widget.clase.simulacros ?? [], // Asegura que siempre sea una lista no nula
-                filterStatus: _selectedTab.first, // Pasa el estado seleccionado
-              )
-            else // Si tuvieras una pestaña de foros, la mostrarías aquí
-              const SizedBox.shrink(), // O un widget para foros
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: colors.surfaceContainerHighest,
+        //? AppBar
+        appBar: _AppBarClasesICFES(
+          clase: widget.clase,
+        ), // Pasa la clase al AppBar
+        //? Pestaña de simulacros (Completado o Pendiente)
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _SelectorPestanias(
+                selectedTab: _selectedTab,
+                onSelectionChanged: (newSelection) {
+                  setState(() {
+                    _selectedTab = newSelection;
+                  });
+                },
+              ),
+              // Condicionalmente muestra la lista de simulacros o foros
+              if (_selectedTab.contains('Pendiente') ||
+                  _selectedTab.contains('Completado'))
+                _ListSimulacros(
+                  simulacros:
+                      widget.clase.simulacros ??
+                      [], // Asegura que siempre sea una lista no nula
+                  filterStatus:
+                      _selectedTab.first, // Pasa el estado seleccionado
+                )
+              else // Si tuvieras una pestaña de foros, la mostrarías aquí
+                const SizedBox.shrink(), // O un widget para foros
+            ],
+          ),
         ),
       ),
     );
@@ -52,7 +63,8 @@ class _ClaseScreenState extends State<ClaseScreen> {
 
 class _ListSimulacros extends StatelessWidget {
   final List<Simulacro> simulacros; // Recibe la lista de simulacros
-  final String filterStatus; // Recibe el estado para filtrar ('Pendiente' o 'Completado')
+  final String
+  filterStatus; // Recibe el estado para filtrar ('Pendiente' o 'Completado')
 
   const _ListSimulacros({
     super.key,
@@ -63,14 +75,16 @@ class _ListSimulacros extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filtra los simulacros según el estado seleccionado
-    final filteredSimulacros = simulacros.where((s) {
-      if (filterStatus == 'Pendiente') {
-        return s.estado != 'completado'; // Muestra los que no están completados
-      } else if (filterStatus == 'Completado') {
-        return s.estado == 'completado'; // Muestra solo los completados
-      }
-      return true; // Si no hay filtro específico, muestra todos (o ajusta según necesidad)
-    }).toList();
+    final filteredSimulacros =
+        simulacros.where((s) {
+          if (filterStatus == 'Pendiente') {
+            return s.estado !=
+                'completado'; // Muestra los que no están completados
+          } else if (filterStatus == 'Completado') {
+            return s.estado == 'completado'; // Muestra solo los completados
+          }
+          return true; // Si no hay filtro específico, muestra todos (o ajusta según necesidad)
+        }).toList();
 
     if (filteredSimulacros.isEmpty) {
       return const Center(
@@ -86,7 +100,8 @@ class _ListSimulacros extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: filteredSimulacros.length, // Usa la lista filtrada
       itemBuilder: (context, index) {
-        final simulacro = filteredSimulacros[index]; // Accede al simulacro filtrado
+        final simulacro =
+            filteredSimulacros[index]; // Accede al simulacro filtrado
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -133,18 +148,37 @@ class _ListSimulacros extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        simulacro.estado == 'pendiente' ? 'Disponible hasta: --/--' : 'Completado el: --/--', // Ajusta la fecha si la tienes
+                        simulacro.estado == 'pendiente'
+                            ? 'Disponible hasta: --/--'
+                            : 'Completado el: --/--', // Ajusta la fecha si la tienes
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: simulacro.estado == 'pendiente' ? Colors.green.shade700 : Colors.grey,
-                            ),
+                          color:
+                              simulacro.estado == 'pendiente'
+                                  ? Colors.green.shade700
+                                  : Colors.grey,
+                        ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                      SimulacroScreen(simulacro: simulacro),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: simulacro.estado == 'en progreso'
-                              ? const Color(0xFFD4AF37) // Amarillo para "In Progress"
-                              : simulacro.estado == 'completado'
-                                  ? const Color(0xFFB06D80) // Morado para "Completado"
+                          backgroundColor:
+                              simulacro.estado != 'en progreso'
+                                  ? const Color(
+                                    0xFFD4AF37,
+                                  ) // Amarillo para "In Progress"
+                                  : simulacro.estado == 'completado'
+                                  ? const Color(
+                                    0xFFB06D80,
+                                  ) // Morado para "Completado"
                                   : Colors.grey, // Gris para "Pendiente"
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -154,11 +188,11 @@ class _ListSimulacros extends StatelessWidget {
                           simulacro.estado == 'en progreso'
                               ? 'In Progress'
                               : simulacro.estado == 'completado'
-                                  ? 'Completado'
-                                  : 'Entrar', // O "Iniciar" para pendiente
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                color: Colors.white,
-                              ),
+                              ? 'Completado'
+                              : 'Entrar', // O "Iniciar" para pendiente
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelLarge?.copyWith(color: Colors.white),
                         ),
                       ),
                     ],
@@ -175,7 +209,8 @@ class _ListSimulacros extends StatelessWidget {
 
 class _SelectorPestanias extends StatefulWidget {
   final Set<String> selectedTab; // Recibe el estado
-  final ValueChanged<Set<String>> onSelectionChanged; // Callback para notificar cambios
+  final ValueChanged<Set<String>>
+  onSelectionChanged; // Callback para notificar cambios
 
   const _SelectorPestanias({
     super.key,
@@ -219,10 +254,14 @@ class _SelectorPestaniasState extends State<_SelectorPestanias> {
   }
 }
 
-class _AppBarClasesICFES extends StatelessWidget implements PreferredSizeWidget {
+class _AppBarClasesICFES extends StatelessWidget
+    implements PreferredSizeWidget {
   final ClaseICFES clase; // Añade esta propiedad
 
-  const _AppBarClasesICFES({super.key, required this.clase}); // Añade el constructor
+  const _AppBarClasesICFES({
+    super.key,
+    required this.clase,
+  }); // Añade el constructor
 
   @override
   Size get preferredSize => const Size.fromHeight(180);
@@ -254,13 +293,15 @@ class _AppBarClasesICFES extends StatelessWidget implements PreferredSizeWidget 
               Text(
                 clase.nombreClase, // ¡Ahora es dinámico!
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: colors.onPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: colors.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 '${clase.foros!.length + clase.simulacros!.length} miembros', // Ejemplo dinámico de miembros
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.onPrimary),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: colors.onPrimary),
               ),
               const Spacer(),
               Row(
@@ -299,7 +340,11 @@ class _AppBarClasesICFES extends StatelessWidget implements PreferredSizeWidget 
                       ),
                     ],
                   ),
-                  Icon(Icons.arrow_forward_ios, color: colors.onPrimary, size: 20),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: colors.onPrimary,
+                    size: 20,
+                  ),
                 ],
               ),
             ],

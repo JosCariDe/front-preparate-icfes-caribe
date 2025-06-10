@@ -29,59 +29,64 @@ class HomeScreen extends StatelessWidget {
     if (estudiante == null) {
       return const Scaffold(
         body: Center(
-          child: Text('No se ha cargado la informacion del estudiante'),
+          child: Text('No se ha cargado la informacion del estudiante', style: TextStyle(fontSize: 16),),
         ),
       );
     }
 
     final colors = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: colors.surfaceContainerHighest,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: BackButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const SplashScreen(),
-                    ),
-                  );
-                },
-              ),
-            ),
-            //! INFORMACION DEL USER
-            InforUser(estudiante: estudiante),
-            //! BARRA DE BUSQUEDA
-            BarraBusqueda(),
-            //TODO SECCION CLASES ICFES
-            const SizedBox(height: 20),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'CLASES ICFES DISPONIBLES',
-                style: TextStyle(color: primaryText),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ClasesICFES(estudiante: estudiante),
-            //TODO SECCION AVANCE
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Mi Avance',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 19),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: colors.surfaceContainerHighest,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: BackButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SplashScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            SeccionAvance(estudiante: estudiante),
-          ],
+              //! INFORMACION DEL USER
+              InforUser(estudiante: estudiante),
+              //! BARRA DE BUSQUEDA
+              BarraBusqueda(),
+              //TODO SECCION CLASES ICFES
+              const SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'CLASES ICFES DISPONIBLES',
+                    style: TextStyle(color: primaryText, fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ClasesICFES(estudiante: estudiante),
+              //TODO SECCION AVANCE
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Mi Avance',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: primaryText, fontSize: 19, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SeccionAvance(estudiante: estudiante),
+            ],
+          ),
         ),
       ),
     );
@@ -138,12 +143,12 @@ class SeccionAvance extends StatelessWidget {
                             children: [
                               Text(
                                 foro!.nombre, // ¡Dinámico!
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                               const SizedBox(height: 5),
                               Text(
                                 'Creado Por: ${foro.creador}', // ¡Dinámico!
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               const SizedBox(height: 10),
                               Row(
@@ -152,7 +157,7 @@ class SeccionAvance extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Creado el ${foro.fecha.day}/${foro.fecha.month}/${foro.fecha.year}', // ¡Dinámico!
-                                    style: Theme.of(context).textTheme.bodySmall
+                                    style: Theme.of(context).textTheme.bodyMedium
                                         ?.copyWith(color: Colors.grey),
                                   ),
                                   ElevatedButton(
@@ -320,6 +325,7 @@ class ClasesICFES extends StatelessWidget {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => ClaseScreen(clase: clase)));
             },
+            //? Card de clase ICFES
             child: Container(
               width: 250,
               margin: EdgeInsets.only(left: index == 0 ? 20 : 10, right: 10),
@@ -347,12 +353,14 @@ class ClasesICFES extends StatelessWidget {
                       clase!.nombreClase,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 19
                       ),
                     ),
                     Text(
                       '${clase.simulacros?.where((s) => s.estado != 'completado').length} Simulacros Pendiente',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 15,
                       ),
                     ),
                     const Spacer(),
@@ -477,7 +485,7 @@ class InforUser extends StatelessWidget {
             children: [
               Text(
                 estudiante.nombreCompleto,
-                style: TextStyle(color: primaryText),
+                style: TextStyle(color: primaryText, fontSize: 16),
               ),
               Text(
                 'Grado: ${estudiante.grado ?? 'N/A'}',

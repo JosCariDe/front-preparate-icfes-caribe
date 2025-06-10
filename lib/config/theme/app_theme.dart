@@ -31,6 +31,12 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorSchemeSeed: _colorThemes[selectedColor],
+      textTheme: const TextTheme(
+        bodyMedium: TextStyle(fontSize: 16.0),
+        // Puedes añadir más estilos aquí si es necesario, por ejemplo:
+        // headlineLarge: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+        // titleMedium: TextStyle(fontSize: 18.0),
+      ),
     );
   }
 }
