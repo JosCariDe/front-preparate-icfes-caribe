@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:caribe_app/domain/entities/estudiante.dart';
 
 class EstudianteService {
-  final String _baseUrl = 'http://localhost:5100';
+  final String _baseUrl = 'http://10.0.2.2:5100';
 
   Future<List<Estudiante>> getEstudiantes() async {
     final response = await http.get(Uri.parse('$_baseUrl/estudiantes'));

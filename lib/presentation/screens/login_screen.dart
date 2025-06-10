@@ -25,7 +25,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    final estudianteProvider = Provider.of<EstudianteProvider>(context, listen: false);
+    final estudianteProvider = Provider.of<EstudianteProvider>(
+      context,
+      listen: false,
+    );
     final success = await estudianteProvider.login(
       _emailController.text,
       _passwordController.text,
@@ -42,7 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(estudianteProvider.errorMessage ?? 'Error desconocido al iniciar sesión'),
+            content: Text(
+              estudianteProvider.errorMessage ??
+                  'Error desconocido al iniciar sesión',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -53,7 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final estudianteProvider = context.watch<EstudianteProvider>(); // Escucha cambios en el provider
+    final estudianteProvider =
+        context.watch<EstudianteProvider>(); // Escucha cambios en el provider
 
     return Scaffold(
       backgroundColor: primaryColor,
@@ -67,9 +74,9 @@ class _LoginScreenState extends State<LoginScreen> {
               'Preparate ICFES\nCaribe',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: colors.onPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: colors.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Positioned(
@@ -80,19 +87,23 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: colors.surface,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 40,
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Inicia sesion para mayor contenido.',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.grey.shade700,
-                            ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(color: Colors.grey.shade700),
                       ),
                       const SizedBox(height: 30),
                       // Campo de Email
@@ -107,14 +118,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 20,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       // Campo de Contraseña
                       TextField(
                         controller: _passwordController,
-                        obscureText: !_isPasswordVisible, // Controla la visibilidad
+                        obscureText:
+                            !_isPasswordVisible, // Controla la visibilidad
                         decoration: InputDecoration(
                           hintText: 'Contraseña',
                           filled: true,
@@ -125,7 +140,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               color: Colors.grey,
                             ),
                             onPressed: () {
@@ -134,7 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             },
                           ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 20,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -142,28 +162,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       estudianteProvider.isLoading
                           ? const CircularProgressIndicator() // Muestra un indicador de carga
                           : ElevatedButton(
-                              onPressed: _login, // Llama a la función _login
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 50),
-                                backgroundColor: colors.secondary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: Text(
-                                'Iniciar Sesión',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: colors.onSecondary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            onPressed: _login, // Llama a la función _login
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: colors.secondary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                      if (estudianteProvider.errorMessage != null) // Muestra mensaje de error
+                            child: Text(
+                              'Iniciar Sesión',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: colors.onSecondary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      if (estudianteProvider.errorMessage !=
+                          null) // Muestra mensaje de error
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: Text(
                             estudianteProvider.errorMessage!,
-                            style: const TextStyle(color: Colors.red, fontSize: 14, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -171,8 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                         'O inicia sesión con:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey.shade600,
-                            ),
+                          color: Colors.grey.shade600,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton.icon(
@@ -182,9 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Image.asset('assets/img/9187604.png', height: 24),
                         label: Text(
                           'Continue with Google',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Colors.grey.shade800,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.grey.shade800),
                         ),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
@@ -199,12 +225,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           // Lógica para iniciar sesión con Apple
                         },
-                        icon: const Icon(Icons.apple, color: Colors.black, size: 28),
+                        icon: const Icon(
+                          Icons.apple,
+                          color: Colors.black,
+                          size: 28,
+                        ),
                         label: Text(
                           'Continue with Apple',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Colors.grey.shade800,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.grey.shade800),
                         ),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
@@ -217,14 +246,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 30),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen())); 
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterScreen(),
+                            ),
+                          );
                         },
                         child: Text(
                           'Registrate aquí rey',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: colors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyLarge?.copyWith(
+                            color: colors.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
