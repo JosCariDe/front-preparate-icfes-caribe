@@ -11,12 +11,12 @@ class Pregunta {
   final String tema;
   final String enunciado;
   @JsonKey(name: 'url_imagen')
-  final String urlImagen;
+  final String? urlImagen;
   final List<Opcion> opciones;
   @JsonKey(name: 'explicacion_correcta')
   final String explicacionCorrecta;
 
-  Pregunta({required this.id, required this.area, required this.tema, required this.enunciado, required this.urlImagen, required this.opciones, required this.explicacionCorrecta});
+  Pregunta({required this.id, required this.area, required this.tema, required this.enunciado, this.urlImagen, required this.opciones, required this.explicacionCorrecta});
 
   factory Pregunta.fromJson(Map<String, dynamic> json) =>
       _$PreguntaFromJson(json);

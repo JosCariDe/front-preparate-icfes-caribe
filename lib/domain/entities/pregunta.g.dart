@@ -11,7 +11,7 @@ Pregunta _$PreguntaFromJson(Map<String, dynamic> json) => Pregunta(
   area: json['area'] as String,
   tema: json['tema'] as String,
   enunciado: json['enunciado'] as String,
-  urlImagen: json['url_imagen'] as String,
+  urlImagen: json['url_imagen'] as String?,
   opciones:
       (json['opciones'] as List<dynamic>)
           .map((e) => Opcion.fromJson(e as Map<String, dynamic>))
