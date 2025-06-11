@@ -2,6 +2,7 @@ import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:caribe_app/domain/entities/pregunta.dart';
 import 'package:caribe_app/domain/entities/simulacro.dart';
 import 'package:caribe_app/infrastructure/services/pregunta_service.dart';
+import 'package:caribe_app/presentation/screens/finalizar_simulacro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
   List<Pregunta> preguntas = [];
   bool isLoading = true;
   int _currentQuestionIndex = 0; // Nuevo: Índice de la pregunta actual
+  String? _selectedOption; // Nuevo: Opción seleccionada para la pregunta actual
 
   @override
   void initState() {
@@ -54,13 +56,19 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
   }
 
   void _nextQuestion() {
+    if (_selectedOption == null) {
+      // No se ha seleccionado ninguna opción, no avanzar
+      return;
+    }
     setState(() {
+      // Aquí podrías guardar la respuesta seleccionada si fuera necesario
+      // Por ejemplo: _respuestasUsuario[_currentQuestionIndex] = _selectedOption;
+
       if (_currentQuestionIndex < preguntas.length - 1) {
         _currentQuestionIndex++;
+        _selectedOption = null; // Reiniciar la selección para la siguiente pregunta
       } else {
-        // Opcional: Navegar a una pantalla de resultados o finalizar el simulacro
         print('DEBUG: Fin del simulacro.');
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ResultadosScreen()));
       }
     });
   }
@@ -121,9 +129,35 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
                                           alignment: Alignment.centerLeft,
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 7),
-                                            child: Text(
-                                              '${opcion.letra}.   ${opcion.texto}',
-                                              style: TextStyle(fontSize: 18),
+                                            child: InkWell( // Usar InkWell para detectar toques
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedOption = opcion.letra; // Actualizar la opción seleccionada
+                                                });
+                                              },
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding: const EdgeInsets.all(15.0), // Añadir padding para el texto
+                                                decoration: BoxDecoration(
+                                                  color: _selectedOption == opcion.letra ? primaryColor : Colors.white, // Cambiar color si está seleccionada
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey.withOpacity(0.2),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 5,
+                                                      offset: Offset(0, 3),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Text(
+                                                  '${opcion.letra}.   ${opcion.texto}',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: _selectedOption == opcion.letra ? Colors.white : Colors.black, // Cambiar color del texto
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         );
@@ -136,9 +170,11 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
                               // Aquí irían las opciones de respuesta, si las tuvieras
                               // Por ahora, solo el botón de siguiente
                               ElevatedButton(
-                                onPressed: _currentQuestionIndex < preguntas.length - 1
-                                    ? _nextQuestion
-                                    : null, // Deshabilita el botón si es la última pregunta
+                                onPressed: _selectedOption == null
+                                    ? null // Deshabilita el botón si no hay opción seleccionada
+                                    : _currentQuestionIndex < preguntas.length - 1
+                                        ? _nextQuestion
+                                        : () => Navigator.push(context, MaterialPageRoute(builder:(context) => FinalizarSimulacroScreen(simulacro: simulacro))),
                                 style: ButtonStyle(
                                   textStyle: WidgetStateProperty.all<TextStyle>(
                                     TextStyle(fontSize: 20, color: Colors.white)
