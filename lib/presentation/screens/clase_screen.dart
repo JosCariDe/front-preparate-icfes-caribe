@@ -25,7 +25,7 @@ class _ClaseScreenState extends State<ClaseScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: colors.surfaceContainerHighest,
-        //? AppBar
+        //? AppBar 
         appBar: _AppBarClasesICFES(
           clase: widget.clase,
         ), // Pasa la clase al AppBar

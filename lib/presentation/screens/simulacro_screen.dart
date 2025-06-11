@@ -38,7 +38,7 @@ class SimulacroScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PreguntasScreen()),
+                      MaterialPageRoute(builder: (context) => PreguntasScreen(simulacro: simulacro,)),
                     );
                   },
                   style: ButtonStyle(
