@@ -14,57 +14,63 @@ class PreguntasScreen extends StatefulWidget {
 }
 
 class _PreguntasScreenState extends State<PreguntasScreen> {
-  // 1. Declara estas variables a nivel de clase
   late PreguntasService preguntaService;
-  List<Pregunta> preguntas = []; // Inicializa como lista vacía
-  bool isLoading = true; // Añade un estado de carga
+  List<Pregunta> preguntas = [];
+  bool isLoading = true;
+  int _currentQuestionIndex = 0; // Nuevo: Índice de la pregunta actual
 
   @override
   void initState() {
-    super.initState(); // Siempre llama a super.initState() primero
-
-    // 2. Inicializa el servicio
+    super.initState();
     preguntaService = PreguntasService();
-
-    // 3. Llama a la función de carga de preguntas
     _cargarPreguntasInicial();
   }
 
-  // Renombra la función para evitar conflictos y hacerla privada
   Future<void> _cargarPreguntasInicial() async {
     final idPreguntas = widget.simulacro.listaIdPreguntas;
     if (idPreguntas != null && idPreguntas.isNotEmpty) {
       List<Pregunta> loadedPreguntas = [];
       for (var id in idPreguntas) {
-        final pregunta = await preguntaService.getPreguntasById(id);
-        if (pregunta != null) { // Asegúrate de que la pregunta no sea nula
-          loadedPreguntas.add(pregunta);
+        try {
+          final pregunta = await preguntaService.getPreguntasById(id);
+          if (pregunta != null) {
+            loadedPreguntas.add(pregunta);
+          }
+        } catch (e) {
+          print('ERROR al cargar pregunta con ID $id: $e');
+          // Puedes manejar el error de forma más robusta aquí, por ejemplo, mostrando un mensaje al usuario.
         }
       }
       setState(() {
         preguntas = loadedPreguntas;
-        isLoading = false; // Marca que la carga ha terminado
+        isLoading = false;
+        _currentQuestionIndex = 0; // Asegura que el índice se reinicie al cargar
       });
     } else {
       setState(() {
-        isLoading = false; // No hay preguntas para cargar
+        isLoading = false;
       });
     }
+  }
+
+  void _nextQuestion() {
+    setState(() {
+      if (_currentQuestionIndex < preguntas.length - 1) {
+        _currentQuestionIndex++;
+      } else {
+        // Opcional: Navegar a una pantalla de resultados o finalizar el simulacro
+        print('DEBUG: Fin del simulacro.');
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ResultadosScreen()));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final simulacro = widget.simulacro;
-    final cantidadPreguntas = simulacro.listaIdPreguntas?.length;
-    final contadorPreguntasRespondidas = 0;
-
-    // Elimina estas líneas de aquí, ya que se movieron a nivel de clase
-    // final PreguntasService preguntaService = PreguntasService();
-    // var idPreguntas = widget.simulacro.listaIdPreguntas;
-    // List<Pregunta>? preguntas = [];
-
-    // Elimina esta función de aquí, ya que se movió y renombró
-    // void cargarPreguntas(List<String> preguntasId) async { ... }
+    final cantidadPreguntas = simulacro.listaIdPreguntas?.length ?? 0;
+    // Actualiza el contador de preguntas respondidas
+    final contadorPreguntasRespondidas = _currentQuestionIndex;
 
     return SafeArea(
       child: Scaffold(
@@ -89,15 +95,64 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 LinearProgressIndicator(
-                  value: (contadorPreguntasRespondidas * 10) / 50,
+                  value: cantidadPreguntas > 0 ? (_currentQuestionIndex / cantidadPreguntas) : 0, // Progreso basado en el índice
                 ),
                 SizedBox(height: 16),
-                // 4. Muestra un indicador de carga o el contenido cuando esté listo
                 isLoading
-                    ? const CircularProgressIndicator() // Muestra un spinner mientras carga
-                    : preguntas.isNotEmpty
-                        ? Text(preguntas[0].enunciado)
-                        : const Text('No hay preguntas disponibles'), // Maneja el caso sin preguntas
+                    ? const CircularProgressIndicator()
+                    : preguntas.isEmpty
+                        ? const Text('No hay preguntas disponibles')
+                        : Column(
+                            children: [
+                              SizedBox(
+                                height: 520,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      preguntas[_currentQuestionIndex].enunciado, // Muestra la pregunta actual
+                                      style: TextStyle(fontSize: 20),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: preguntas[_currentQuestionIndex].opciones.map((opcion) {
+                                        return Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 7),
+                                            child: Text(
+                                              '${opcion.letra}.   ${opcion.texto}',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              // Aquí irían las opciones de respuesta, si las tuvieras
+                              // Por ahora, solo el botón de siguiente
+                              ElevatedButton(
+                                onPressed: _currentQuestionIndex < preguntas.length - 1
+                                    ? _nextQuestion
+                                    : null, // Deshabilita el botón si es la última pregunta
+                                style: ButtonStyle(
+                                  textStyle: WidgetStateProperty.all<TextStyle>(
+                                    TextStyle(fontSize: 20, color: Colors.white)
+                                  ),
+                                ),
+                                child: Text(
+                                  _currentQuestionIndex < preguntas.length - 1
+                                      ? 'Siguiente Pregunta'
+                                      : 'Finalizar Simulacro',
+                                ),
+                                
+                              ),
+                            ],
+                          ),
               ],
             ),
           ),
