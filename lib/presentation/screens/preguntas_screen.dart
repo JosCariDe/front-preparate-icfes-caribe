@@ -122,6 +122,15 @@ class _PreguntasScreenState extends State<PreguntasScreen> {
                                       textAlign: TextAlign.center,
                                     ),
                                     SizedBox(height: 20),
+                                    if (preguntas[_currentQuestionIndex].urlImagen != null)
+                                      Image.network(
+                                        preguntas[_currentQuestionIndex].urlImagen!,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      )
+                                    else
+                                      SizedBox(height: 1), // Espacio vacío si no hay imagen
+                                    SizedBox(height: 20), // Añadir un SizedBox para separar la imagen de las opciones
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: preguntas[_currentQuestionIndex].opciones.map((opcion) {

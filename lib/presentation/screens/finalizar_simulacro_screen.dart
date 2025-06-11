@@ -1,4 +1,5 @@
 
+import 'package:caribe_app/config/theme/app_theme.dart';
 import 'package:caribe_app/domain/entities/simulacro.dart';
 import 'package:caribe_app/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class FinalizarSimulacroScreen extends StatelessWidget {
                   'Simulacro Finalizado',
                   style: TextStyle(
                     fontSize: 30,
-                    color: Colors.blueAccent,
+                    color: primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -41,7 +42,7 @@ class FinalizarSimulacroScreen extends StatelessWidget {
                   },
                   style: ButtonStyle(
                     backgroundColor:
-                        WidgetStateProperty.all<Color>(Colors.blueAccent),
+                        WidgetStateProperty.all<Color>(primaryColor),
                   ),
                   child: Text(
                     'Volver al Inicio',
